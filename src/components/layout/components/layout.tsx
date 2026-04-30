@@ -10,7 +10,10 @@ export default function Layout({ children }: LayoutProps) {
 
   return (
     <div className="mx-auto flex min-h-dvh max-w-6xl flex-col overflow-hidden p-4">
-      <Header title="00-project-title" projectLink="https://www.x.com" />
+      <Header
+        title="04-shopping-cart"
+        projectLink="https://github.com/davePawww/rws-shopping-cart"
+      />
       <motion.main
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
