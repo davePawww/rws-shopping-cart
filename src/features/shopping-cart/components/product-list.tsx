@@ -68,13 +68,13 @@ export function ProductList() {
       {data?.map((product) => (
         <motion.div key={product.id} variants={itemVariants} className="h-full w-full">
           <Card className="relative mx-auto flex h-full w-full max-w-sm flex-col pt-0">
-            <div className="absolute inset-0 z-30 aspect-video bg-black/35" />
+            <div className="absolute inset-0 z-30 aspect-video bg-black/15" />
             <img
               src={product.image}
               alt={product.title}
               className="relative z-20 aspect-video w-full object-contain py-2"
             />
-            <Badge variant="outline" className="absolute top-1 right-1 z-50">
+            <Badge variant="secondary" className="absolute top-1 right-1 z-50">
               ${product.price}
             </Badge>
             <CardHeader className="flex-1">
