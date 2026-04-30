@@ -54,7 +54,18 @@ export function ProductList() {
         animate="visible"
         className="text-muted"
       >
-        Loading...
+        Loading products...
+      </motion.div>
+    );
+  if (!data || data.length === 0)
+    return (
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="text-muted"
+      >
+        No products found.
       </motion.div>
     );
 
