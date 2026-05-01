@@ -1,4 +1,5 @@
-import { Minus, Plus, Trash } from 'lucide-react';
+import { Link } from '@tanstack/react-router';
+import { ArrowRight, Minus, Plus, Trash } from 'lucide-react';
 import { motion, stagger, type Variants } from 'motion/react';
 
 import { Button, MotionButton } from '@/components/ui/button';
@@ -32,7 +33,22 @@ export function CartItems() {
     visible: { opacity: 1, y: 0, transition: { ease: 'linear' } },
   };
 
-  if (cartItems.length === 0) return <div>Your cart is empty.</div>;
+  if (cartItems.length === 0)
+    return (
+      <div className="flex h-full flex-col items-center justify-center gap-2">
+        <p>Your cart is empty.</p>
+        <Link to="/">
+          <MotionButton
+            className="hover:cursor-pointer"
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.96 }}
+            transition={{ type: 'tween', duration: 0.1, ease: 'easeOut' }}
+          >
+            <ArrowRight /> Continue Shopping
+          </MotionButton>
+        </Link>
+      </div>
+    );
 
   return (
     <motion.div
