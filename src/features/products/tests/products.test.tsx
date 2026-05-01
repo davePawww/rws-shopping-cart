@@ -7,7 +7,7 @@ import { fetchProducts } from '@/features/products/products.api';
 import type { Product } from '@/types/product.types';
 
 // fetchProducts mock
-vi.mock('@/features/shopping-cart/shopping-cart.api');
+vi.mock('@/features/products/products.api');
 
 const mockProducts: Product[] = [
   {
@@ -74,7 +74,7 @@ function renderWithProviders(ui: React.ReactElement) {
   return render(<QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>);
 }
 
-describe('ProductList', () => {
+describe('Products', () => {
   afterEach(() => {
     cleanup();
     vi.clearAllMocks();
