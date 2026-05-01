@@ -15,7 +15,7 @@ export function ShopNav() {
       <Link to="/cart" aria-label="link to cart" className="relative">
         <FaCartArrowDown size={24} />
         {cartItemCount > 0 && (
-          <span className="absolute top-3 -right-2 z-50 size-4 rounded-full bg-red-400 p-0.5 text-center text-xs">
+          <span className="bg-accent border-primary absolute top-3 -right-2 z-50 flex size-4 items-center justify-center rounded-full border text-xs">
             {cartItemCount}
           </span>
         )}
