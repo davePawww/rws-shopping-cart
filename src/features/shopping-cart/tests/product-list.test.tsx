@@ -92,12 +92,6 @@ describe('ProductList', () => {
     expect(await screen.findByText('Failed to load products.')).toBeInTheDocument();
   });
 
-  it('shows a loading message while fetching the products', async () => {
-    vi.mocked(fetchProducts).mockReturnValue(new Promise(() => {}));
-    renderWithProviders(<ProductList />);
-    expect(await screen.findByText('Loading products...')).toBeInTheDocument();
-  });
-
   it('renders a list of products when API call is successful', async () => {
     vi.mocked(fetchProducts).mockResolvedValue(mockProducts);
     renderWithProviders(<ProductList />);

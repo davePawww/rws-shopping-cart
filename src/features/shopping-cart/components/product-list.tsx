@@ -5,34 +5,31 @@ import { FaCartPlus } from 'react-icons/fa';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { fetchProducts } from '@/features/shopping-cart/shopping-cart.api';
+import { productsQueryOptions } from '@/features/shopping-cart/shopping-cart.queries';
 
 export function ProductList() {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['products'],
-    queryFn: () => fetchProducts(),
-  });
+  const { data, error } = useQuery(productsQueryOptions);
 
   const containerVariants: Variants = {
     visible: {
       opacity: 1,
       transition: {
         when: 'beforeChildren',
-        delay: 1,
-        delayChildren: stagger(0.1, { startDelay: 0.7 }),
-        ease: 'easeInOut',
+        delayChildren: stagger(0.1, { startDelay: 0.3 }),
+        ease: 'easeIn',
       },
     },
     hidden: {
       opacity: 0,
       transition: {
         when: 'afterChildren',
+        ease: 'easeOut',
       },
     },
   };
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
+    hidden: { opacity: 0, y: 20, transition: { ease: 'easeOut' } },
+    visible: { opacity: 1, y: 0, transition: { ease: 'linear' } },
   };
 
   if (error)
@@ -44,17 +41,6 @@ export function ProductList() {
         className="text-destructive"
       >
         Failed to load products.
-      </motion.div>
-    );
-  if (isLoading)
-    return (
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="text-muted"
-      >
-        Loading products...
       </motion.div>
     );
   if (!data || data.length === 0)
@@ -74,7 +60,7 @@ export function ProductList() {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="grid grid-cols-2 justify-items-center gap-4 md:grid-cols-3"
+      className="mt-4 grid grid-cols-2 justify-items-center gap-4 md:grid-cols-3"
     >
       {data?.map((product) => (
         <motion.div key={product.id} variants={itemVariants} className="h-full w-full">

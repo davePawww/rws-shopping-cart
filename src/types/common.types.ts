@@ -1,7 +1,8 @@
-import type { JSX, ReactNode } from 'react';
+import type { QueryClient } from '@tanstack/react-query';
+import type { JSX } from 'react';
 
-export type LayoutProps = {
-  children: ReactNode;
+export type RouterContext = {
+  queryClient: QueryClient;
 };
 
 export type HeaderProps = {
