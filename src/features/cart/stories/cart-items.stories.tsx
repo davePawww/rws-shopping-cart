@@ -4,7 +4,7 @@ import { CartItems } from '@/features/cart/components/cart-items';
 import { useCartStore } from '@/store/products.store';
 
 const meta = {
-  title: 'Shopping Cart/Cart Item',
+  title: 'Shopping Cart/Cart Items',
   component: CartItems,
   parameters: {},
   tags: ['autodocs'],
@@ -39,3 +39,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+export const EmptyCart: Story = {
+  decorators: [
+    (Story) => {
+      useCartStore.setState({ cartItems: [] });
+      return <Story />;
+    },
+  ],
+};
