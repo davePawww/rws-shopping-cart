@@ -1,3 +1,9 @@
+import {
+  createMemoryHistory,
+  createRootRoute,
+  createRouter,
+  RouterProvider,
+} from '@tanstack/react-router';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
@@ -18,6 +24,15 @@ const mockCartItems: CartItem[] = [
   },
 ];
 
+function renderWithRouter() {
+  const rootRoute = createRootRoute({ component: CartItems });
+  const router = createRouter({
+    routeTree: rootRoute,
+    history: createMemoryHistory(),
+  });
+  return render(<RouterProvider router={router} />);
+}
+
 describe('CartItems', () => {
   beforeEach(() => {
     localStorage.clear();
@@ -28,54 +43,54 @@ describe('CartItems', () => {
     cleanup();
   });
 
-  it('shows an empty message when there are no items in the cart', () => {
-    render(<CartItems />);
+  it('shows an empty message when there are no items in the cart', async () => {
+    renderWithRouter();
 
-    expect(screen.getByText('Your cart is empty.')).toBeInTheDocument();
+    expect(await screen.findByText('Your cart is empty.')).toBeInTheDocument();
   });
 
-  it('renders item details when the cart has items', () => {
+  it('renders item details when the cart has items', async () => {
     useCartStore.setState({ cartItems: mockCartItems });
-    render(<CartItems />);
+    renderWithRouter();
 
-    expect(screen.getByText('Test Backpack')).toBeInTheDocument();
-    expect(screen.getByText('A sturdy backpack for everyday use.')).toBeInTheDocument();
-    expect(screen.getByText('Price: $29.99')).toBeInTheDocument();
-    expect(screen.getByText('2')).toBeInTheDocument();
+    expect(await screen.findByText('Test Backpack')).toBeInTheDocument();
+    expect(await screen.findByText('A sturdy backpack for everyday use.')).toBeInTheDocument();
+    expect(await screen.findByText('Price: $29.99')).toBeInTheDocument();
+    expect(await screen.findByText('2')).toBeInTheDocument();
   });
 
-  it('increases quantity when the plus button is clicked', () => {
+  it('increases quantity when the plus button is clicked', async () => {
     useCartStore.setState({ cartItems: mockCartItems });
-    render(<CartItems />);
+    renderWithRouter();
 
-    fireEvent.click(screen.getByRole('button', { name: /plus item/i }));
+    fireEvent.click(await screen.findByRole('button', { name: /plus item/i }));
 
     expect(useCartStore.getState().cartItems[0].quantity).toBe(3);
   });
 
-  it('decreases quantity when the minus button is clicked', () => {
+  it('decreases quantity when the minus button is clicked', async () => {
     useCartStore.setState({ cartItems: mockCartItems });
-    render(<CartItems />);
+    renderWithRouter();
 
-    fireEvent.click(screen.getByRole('button', { name: /minus item/i }));
+    fireEvent.click(await screen.findByRole('button', { name: /minus item/i }));
 
     expect(useCartStore.getState().cartItems[0].quantity).toBe(1);
   });
 
-  it('removes the item from the cart when quantity reaches zero', () => {
+  it('removes the item from the cart when quantity reaches zero', async () => {
     useCartStore.setState({ cartItems: [{ ...mockCartItems[0], quantity: 1 }] });
-    render(<CartItems />);
+    renderWithRouter();
 
-    fireEvent.click(screen.getByRole('button', { name: /minus item/i }));
+    fireEvent.click(await screen.findByRole('button', { name: /minus item/i }));
 
     expect(useCartStore.getState().cartItems).toHaveLength(0);
   });
 
-  it('removes the item from the cart when the remove button is clicked', () => {
+  it('removes the item from the cart when the remove button is clicked', async () => {
     useCartStore.setState({ cartItems: mockCartItems });
-    render(<CartItems />);
+    renderWithRouter();
 
-    fireEvent.click(screen.getByRole('button', { name: /remove item/i }));
+    fireEvent.click(await screen.findByRole('button', { name: /remove item/i }));
 
     expect(useCartStore.getState().cartItems).toHaveLength(0);
   });

@@ -1,4 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import {
+  createMemoryHistory,
+  createRootRoute,
+  createRouter,
+  RouterProvider,
+} from '@tanstack/react-router';
 
 import { CartItems } from '@/features/cart/components/cart-items';
 import { useCartStore } from '@/store/products.store';
@@ -12,6 +18,12 @@ const meta = {
   args: {},
   decorators: [
     (Story) => {
+      const rootRoute = createRootRoute({ component: Story });
+      const router = createRouter({
+        routeTree: rootRoute,
+        history: createMemoryHistory(),
+      });
+
       useCartStore.setState({
         cartItems: [
           {
@@ -30,7 +42,7 @@ const meta = {
         ],
       });
 
-      return <Story />;
+      return <RouterProvider router={router} />;
     },
   ],
 } satisfies Meta<typeof CartItems>;
