@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Products } from '@/features/products/components/products';
 
 const meta = {
-  title: 'Shopping Cart/Product List',
+  title: 'Shopping Cart/Products',
   component: Products,
   parameters: {},
   tags: ['autodocs'],
