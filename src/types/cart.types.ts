@@ -1,0 +1,14 @@
+import type { Product } from '@/types/product.types';
+
+export type CartItem = Product & {
+  quantity: number;
+};
+
+export type CartStore = {
+  cartItems: CartItem[];
+  addToCart: (product: Product) => void;
+  increaseQuantity: (productId: number) => void;
+  decreaseQuantity: (productId: number) => void;
+  removeFromCart: (productId: number) => void;
+  clearCart: () => void;
+};

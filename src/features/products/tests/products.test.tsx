@@ -2,14 +2,14 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { ProductList } from '@/features/shopping-cart/components/product-list';
-import { fetchProducts } from '@/features/shopping-cart/shopping-cart.api';
-import type { ShoppingCartProduct } from '@/features/shopping-cart/shopping-cart.types';
+import { Products } from '@/features/products/components/products';
+import { fetchProducts } from '@/features/products/products.api';
+import type { Product } from '@/types/product.types';
 
 // fetchProducts mock
-vi.mock('@/features/shopping-cart/shopping-cart.api');
+vi.mock('@/features/products/products.api');
 
-const mockProducts: ShoppingCartProduct[] = [
+const mockProducts: Product[] = [
   {
     id: 1,
     title: 'Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops',
@@ -74,7 +74,7 @@ function renderWithProviders(ui: React.ReactElement) {
   return render(<QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>);
 }
 
-describe('ProductList', () => {
+describe('Products', () => {
   afterEach(() => {
     cleanup();
     vi.clearAllMocks();
@@ -82,19 +82,19 @@ describe('ProductList', () => {
 
   it('shows No products found. when API returns an empty array', async () => {
     vi.mocked(fetchProducts).mockResolvedValue([]);
-    renderWithProviders(<ProductList />);
+    renderWithProviders(<Products />);
     expect(await screen.findByText('No products found.')).toBeInTheDocument();
   });
 
   it('shows Failed to load products. when API call fails', async () => {
     vi.mocked(fetchProducts).mockRejectedValue(new Error('API error'));
-    renderWithProviders(<ProductList />);
+    renderWithProviders(<Products />);
     expect(await screen.findByText('Failed to load products.')).toBeInTheDocument();
   });
 
   it('renders a list of products when API call is successful', async () => {
     vi.mocked(fetchProducts).mockResolvedValue(mockProducts);
-    renderWithProviders(<ProductList />);
+    renderWithProviders(<Products />);
 
     expect(await screen.findAllByRole('img')).toHaveLength(mockProducts.length);
 

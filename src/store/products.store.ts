@@ -1,13 +1,14 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import type { CartStore, ShoppingCartProduct } from '@/features/shopping-cart/shopping-cart.types';
+import type { CartStore } from '@/types/cart.types';
+import type { Product } from '@/types/product.types';
 
 export const useCartStore = create<CartStore>()(
   persist(
     (set) => ({
       cartItems: [],
-      addToCart: (product: ShoppingCartProduct) =>
+      addToCart: (product: Product) =>
         set((state) => {
           const existing = state.cartItems.find((item) => item.id === product.id);
           if (existing) {

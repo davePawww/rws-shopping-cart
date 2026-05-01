@@ -5,7 +5,8 @@ import { motion } from 'motion/react';
 
 import Footer from '@/components/layout/components/footer';
 import Header from '@/components/layout/components/header';
-import { ShopNav } from '@/features/shopping-cart';
+import { ShopNav } from '@/components/layout/components/shop-nav';
+import { Toaster } from '@/components/ui/sonner';
 import { useThemeSync } from '@/hooks/use-theme-sync';
 import type { RouterContext } from '@/types/common.types';
 
@@ -31,6 +32,7 @@ function RootComponent() {
         >
           <ShopNav />
           <Outlet />
+          <Toaster />
         </motion.main>
         <Footer />
       </div>

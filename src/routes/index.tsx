@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 
-import { ProductList } from '@/features/shopping-cart';
-import { productsQueryOptions } from '@/features/shopping-cart/shopping-cart.queries';
+import { Products } from '@/features/products/components/products';
+import { productsQueryOptions } from '@/features/products/products.queries';
 
 export const Route = createFileRoute('/')({
   loader: ({ context: { queryClient } }) => queryClient.ensureQueryData(productsQueryOptions),
@@ -9,5 +9,5 @@ export const Route = createFileRoute('/')({
 });
 
 function RouteComponent() {
-  return <ProductList />;
+  return <Products />;
 }
