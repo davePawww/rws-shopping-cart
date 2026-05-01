@@ -1,4 +1,5 @@
 import { type VariantProps } from 'class-variance-authority';
+import { motion } from 'motion/react';
 import { Slot } from 'radix-ui';
 import * as React from 'react';
 
@@ -9,6 +10,7 @@ function Button({
   className,
   variant = 'default',
   size = 'default',
+
   asChild = false,
   ...props
 }: React.ComponentProps<'button'> &
@@ -28,4 +30,6 @@ function Button({
   );
 }
 
-export { Button };
+const MotionButton = motion.create(Button);
+
+export { Button, MotionButton };

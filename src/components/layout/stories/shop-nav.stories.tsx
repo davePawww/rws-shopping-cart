@@ -6,7 +6,7 @@ import {
   RouterProvider,
 } from '@tanstack/react-router';
 
-import { ShopNav } from '@/features/shopping-cart/components/shop-nav';
+import { ShopNav } from '@/components/layout/components/shop-nav';
 
 const meta = {
   title: 'Shopping Cart/ShopNav',

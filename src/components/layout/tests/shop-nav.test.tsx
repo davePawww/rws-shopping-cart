@@ -7,7 +7,7 @@ import {
 import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { ShopNav } from '@/features/shopping-cart/components/shop-nav';
+import { ShopNav } from '@/components/layout/components/shop-nav';
 
 function renderWithRouter() {
   const rootRoute = createRootRoute({ component: ShopNav });

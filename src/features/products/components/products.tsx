@@ -1,14 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
 import { motion, stagger, type Variants } from 'motion/react';
 import { FaCartPlus } from 'react-icons/fa';
+import { toast } from 'sonner';
 
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { MotionButton } from '@/components/ui/button';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { productsQueryOptions } from '@/features/shopping-cart/shopping-cart.queries';
+import { productsQueryOptions } from '@/features/products/products.queries';
+import { useCartStore } from '@/store/products.store';
+import type { Product } from '@/types/product.types';
 
-export function ProductList() {
+export function Products() {
   const { data, error } = useQuery(productsQueryOptions);
+  const addToCart = useCartStore((state) => state.addToCart);
 
   const containerVariants: Variants = {
     visible: {
@@ -62,7 +66,7 @@ export function ProductList() {
       animate="visible"
       className="mt-4 grid grid-cols-2 justify-items-center gap-4 md:grid-cols-3"
     >
-      {data?.map((product) => (
+      {data?.map((product: Product) => (
         <motion.div key={product.id} variants={itemVariants} className="h-full w-full">
           <Card className="relative mx-auto flex h-full w-full max-w-sm flex-col pt-0">
             <div className="absolute inset-0 z-30 aspect-video bg-black/15" />
@@ -79,9 +83,18 @@ export function ProductList() {
               <CardDescription className="line-clamp-3">{product.description}</CardDescription>
             </CardHeader>
             <CardFooter>
-              <Button className="w-full">
+              <MotionButton
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                transition={{ type: 'tween', duration: 0.1, ease: 'easeOut' }}
+                className="w-full hover:cursor-pointer"
+                onClick={() => {
+                  addToCart(product);
+                  toast.success(`${product.title} added to cart!`);
+                }}
+              >
                 <FaCartPlus /> <p>Add to Cart</p>
-              </Button>
+              </MotionButton>
             </CardFooter>
           </Card>
         </motion.div>

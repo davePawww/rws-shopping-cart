@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { ProductList } from '@/features/shopping-cart/components/product-list';
+import { Products } from '@/features/products/components/products';
 
 const meta = {
   title: 'Shopping Cart/Product List',
-  component: ProductList,
+  component: Products,
   parameters: {},
   tags: ['autodocs'],
   argTypes: {},
@@ -27,7 +27,7 @@ const meta = {
       );
     },
   ],
-} satisfies Meta<typeof ProductList>;
+} satisfies Meta<typeof Products>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
