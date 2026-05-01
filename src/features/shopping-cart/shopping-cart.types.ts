@@ -10,3 +10,16 @@ export type ShoppingCartProduct = {
     count: number;
   };
 };
+
+export type CartItem = ShoppingCartProduct & {
+  quantity: number;
+};
+
+export type CartStore = {
+  cartItems: CartItem[];
+  addToCart: (product: ShoppingCartProduct) => void;
+  increaseQuantity: (productId: number) => void;
+  decreaseQuantity: (productId: number) => void;
+  removeFromCart: (productId: number) => void;
+  clearCart: () => void;
+};

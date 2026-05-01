@@ -87,7 +87,13 @@ export default defineConfig([
       ],
     },
   },
-  ...pluginQuery.configs['flat/recommended'],
+  {
+    files: ['src/routes/**'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
   ...storybook.configs['flat/recommended'],
+  ...pluginQuery.configs['flat/recommended'],
   eslintConfigPrettier,
 ]);
