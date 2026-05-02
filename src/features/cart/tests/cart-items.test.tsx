@@ -90,8 +90,10 @@ describe('CartItems', () => {
     useCartStore.setState({ cartItems: mockCartItems });
     renderWithRouter();
 
-    fireEvent.click(await screen.findByRole('button', { name: /remove item/i }));
+    const cartItem = await screen.findByText('Test Backpack');
+    fireEvent.mouseEnter(cartItem.closest('div')!);
 
+    fireEvent.click(await screen.findByRole('button', { name: /remove item/i }));
     expect(useCartStore.getState().cartItems).toHaveLength(0);
   });
 });

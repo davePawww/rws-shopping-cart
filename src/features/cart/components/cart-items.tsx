@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router';
 import { ArrowRight, Minus, Plus, Trash } from 'lucide-react';
 import { motion, stagger, type Variants } from 'motion/react';
+import { useState } from 'react';
 
 import { Button, MotionButton } from '@/components/ui/button';
 import { useCartStore } from '@/store/products.store';
@@ -10,6 +11,7 @@ export function CartItems() {
   const increaseQuantity = useCartStore((state) => state.increaseQuantity);
   const decreaseQuantity = useCartStore((state) => state.decreaseQuantity);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const [hoveredItem, setHoveredItem] = useState<number | null>(null);
 
   const containerVariants: Variants = {
     visible: {
@@ -55,13 +57,15 @@ export function CartItems() {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="mt-4 flex flex-col gap-4"
+      className="my-4 flex flex-col gap-4"
     >
       {cartItems.map((item) => (
         <motion.div
           key={item.id}
           variants={itemVariants}
           className="full-shadow flex gap-4 rounded-md p-4"
+          onMouseEnter={() => setHoveredItem(item.id)}
+          onMouseLeave={() => setHoveredItem(null)}
         >
           <img
             src={item.image}
@@ -75,11 +79,26 @@ export function CartItems() {
               <p className="text-muted-foreground text-sm">Price: ${item.price}</p>
             </div>
             <div className="mt-auto ml-auto flex gap-2 pt-2">
+              {hoveredItem === item.id && (
+                <MotionButton
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
+                  transition={{ type: 'tween', duration: 0.1, ease: 'easeOut' }}
+                  variant="destructive"
+                  size="icon-xs"
+                  aria-label="remove item"
+                  className="m-0 hover:cursor-pointer"
+                  onClick={() => removeFromCart(item.id)}
+                >
+                  <Trash />
+                </MotionButton>
+              )}
               <div className="full-shadow flex items-center justify-between gap-2 rounded-lg">
                 <Button
                   variant="ghost"
                   size="icon-xs"
                   aria-label="minus item"
+                  className="hover:cursor-pointer"
                   onClick={() => decreaseQuantity(item.id)}
                 >
                   <Minus />
@@ -89,20 +108,12 @@ export function CartItems() {
                   variant="ghost"
                   size="icon-xs"
                   aria-label="plus item"
+                  className="hover:cursor-pointer"
                   onClick={() => increaseQuantity(item.id)}
                 >
                   <Plus />
                 </Button>
               </div>
-              <MotionButton
-                variant="destructive"
-                size="icon-sm"
-                aria-label="remove item"
-                className="m-0"
-                onClick={() => removeFromCart(item.id)}
-              >
-                <Trash />
-              </MotionButton>
             </div>
           </div>
         </motion.div>
