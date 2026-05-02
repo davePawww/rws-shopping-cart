@@ -7,7 +7,7 @@ export function SearchProduct() {
   const setSearchItem = useCartStore((state) => state.setSearchItem);
 
   return (
-    <div className="mt-6 flex w-full gap-2">
+    <div className="flex w-full gap-2">
       <Label htmlFor="search-bar">Search:</Label>
       <Input
         data-testid="search-input"
