@@ -1,8 +1,9 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { Products } from '@/features/products/components/products';
+import { SearchProduct } from '@/features/products/components/search-product';
 import { fetchProducts } from '@/features/products/products.api';
 import type { Product } from '@/types/product.types';
 
@@ -105,5 +106,19 @@ describe('Products', () => {
         mockProducts.length,
       );
     }
+  });
+
+  it('filters products based on search query', async () => {
+    vi.mocked(fetchProducts).mockResolvedValue(mockProducts);
+    render(<SearchProduct />);
+    renderWithProviders(<Products />);
+
+    fireEvent.change(await screen.findByTestId('search-input'), {
+      target: { value: 'mens' },
+    });
+
+    expect(await screen.findByText('Mens Cotton Jacket')).toBeInTheDocument();
+    expect(await screen.findByText('Mens Casual Slim Fit')).toBeInTheDocument();
+    expect(await screen.findByText('Mens Casual Premium Slim Fit T-Shirts')).toBeInTheDocument();
   });
 });

@@ -7,6 +7,8 @@ export type CartItem = Product & {
 export type CartStore = {
   cartItems: CartItem[];
   appliedDiscount: number;
+  searchItem: string;
+  setSearchItem: (query: string) => void;
   setAppliedDiscount: (discount: number) => void;
   addToCart: (product: Product) => void;
   increaseQuantity: (productId: number) => void;

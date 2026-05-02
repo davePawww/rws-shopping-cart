@@ -9,6 +9,8 @@ export const useCartStore = create<CartStore>()(
     (set) => ({
       cartItems: [],
       appliedDiscount: 0,
+      searchItem: '',
+      setSearchItem: (query: string) => set({ searchItem: query }),
       setAppliedDiscount: (discount: number) => set({ appliedDiscount: discount }),
       addToCart: (product: Product) =>
         set((state) => {
