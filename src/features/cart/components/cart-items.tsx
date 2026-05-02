@@ -37,7 +37,7 @@ export function CartItems() {
 
   if (cartItems.length === 0)
     return (
-      <div className="flex h-full flex-col items-center justify-center gap-2">
+      <div className="flex h-full w-full flex-col items-center justify-center gap-2">
         <p>Your cart is empty.</p>
         <Link to="/">
           <MotionButton

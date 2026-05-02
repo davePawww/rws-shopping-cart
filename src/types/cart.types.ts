@@ -6,6 +6,8 @@ export type CartItem = Product & {
 
 export type CartStore = {
   cartItems: CartItem[];
+  appliedDiscount: number;
+  setAppliedDiscount: (discount: number) => void;
   addToCart: (product: Product) => void;
   increaseQuantity: (productId: number) => void;
   decreaseQuantity: (productId: number) => void;
