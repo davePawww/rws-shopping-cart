@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { CartSummary } from '@/features/cart/components/cart-summary';
@@ -10,7 +10,7 @@ const mockCartItems: CartItem[] = [
   {
     id: 1,
     title: 'Test Backpack',
-    price: 29.99,
+    price: 29.95,
     description: 'A sturdy backpack for everyday use.',
     category: "men's clothing",
     image: 'https://fakestoreapi.com/img/test.png',
@@ -43,15 +43,31 @@ describe('CartSummary', () => {
     render(<CartSummary />);
 
     expect(screen.getByText('Subtotal:')).toBeInTheDocument();
-    expect(screen.getByText('$59.98')).toBeInTheDocument(); // 29.99 * 2
+    expect(screen.getByText('$59.90')).toBeInTheDocument();
 
     expect(screen.getByText('VAT:')).toBeInTheDocument();
-    expect(screen.getByText('$4.80')).toBeInTheDocument(); // 8% of 59.98
+    expect(screen.getByText('$4.79')).toBeInTheDocument();
 
     expect(screen.getByText('Discount:')).toBeInTheDocument();
-    expect(screen.getByText('-$0.00')).toBeInTheDocument(); // no discount for subtotal <= 100
+    expect(screen.getByText('-$0.00')).toBeInTheDocument();
 
     expect(screen.getByText('Total:')).toBeInTheDocument();
-    expect(screen.getByText('$64.78')).toBeInTheDocument(); // 59.98 + 4.80 - 0.00
+    expect(screen.getByText('$64.69')).toBeInTheDocument();
+  });
+
+  it('applies a 10% discount when the discount code is valid', () => {
+    useCartStore.setState({ cartItems: mockCartItems });
+    render(<CartSummary />);
+
+    fireEvent.click(screen.getByTestId('discount-code-button'));
+
+    const discountInput = screen.getByTestId('discount-code-input');
+    const applyButton = screen.getByRole('button', { name: /apply/i });
+
+    fireEvent.change(discountInput, { target: { value: 'IMPOOR10' } });
+    fireEvent.click(applyButton);
+
+    expect(screen.getByText('-$5.99')).toBeInTheDocument();
+    expect(screen.getByText('$58.70')).toBeInTheDocument();
   });
 });

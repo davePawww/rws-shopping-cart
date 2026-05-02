@@ -1,9 +1,9 @@
+import { useState } from 'react';
 import { FaTicketAlt } from 'react-icons/fa';
 
 import { Button, MotionButton } from '@/components/ui/button';
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -13,16 +13,35 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { validateDiscountCode } from '@/features/cart/validate-discount-code';
 import { useCartStore } from '@/store/products.store';
 
 export function CartSummary() {
+  const [open, setOpen] = useState(false);
+  const [discountCode, setDiscountCode] = useState('');
+  const [discountError, setDiscountError] = useState('');
+  const appliedDiscount = useCartStore((state) => state.appliedDiscount);
+  const setAppliedDiscount = useCartStore((state) => state.setAppliedDiscount);
   const cartItems = useCartStore((state) => state.cartItems);
   const subTotal = cartItems
     .reduce((total, item) => total + item.price * item.quantity, 0)
     .toFixed(2);
   const vat = (Number(subTotal) * 0.08).toFixed(2);
-  const discount = (Number(subTotal) > 100 ? Number(subTotal) * 0.1 : 0).toFixed(2);
+  const discount = (appliedDiscount ? Number(subTotal) * (appliedDiscount / 100) : 0).toFixed(2);
   const total = (Number(subTotal) + Number(vat) - Number(discount)).toFixed(2);
+
+  const handleApplyDiscount = () => {
+    const percent = validateDiscountCode(discountCode.trim());
+    if (percent === 0) {
+      setDiscountError('Invalid discount code');
+      return;
+    }
+
+    setAppliedDiscount(percent);
+    setDiscountCode('');
+    setDiscountError('');
+    setOpen(false);
+  };
 
   if (cartItems.length === 0) return null;
 
@@ -45,7 +64,13 @@ export function CartSummary() {
         </div>
 
         <div className="mt-4 flex flex-1 items-center justify-end gap-1">
-          <Dialog>
+          <Dialog
+            open={open}
+            onOpenChange={(o) => {
+              setOpen(o);
+              if (o) setDiscountError('');
+            }}
+          >
             <DialogTrigger asChild>
               <MotionButton
                 whileHover={{ scale: 1.04 }}
@@ -53,6 +78,7 @@ export function CartSummary() {
                 transition={{ type: 'tween', duration: 0.1, ease: 'easeOut' }}
                 variant="secondary"
                 size="sm"
+                data-testid="discount-code-button"
                 className="cursor-pointer"
               >
                 <FaTicketAlt /> Discount code
@@ -60,27 +86,34 @@ export function CartSummary() {
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
               <DialogHeader>
-                <DialogTitle>Share link</DialogTitle>
+                <DialogTitle>Discount Code</DialogTitle>
                 <DialogDescription>
-                  Anyone who has this link will be able to view this.
+                  Enter a discount code to get a better deal on your purchase!
                 </DialogDescription>
               </DialogHeader>
               <div className="flex items-center gap-2">
                 <div className="grid flex-1 gap-2">
-                  <Label htmlFor="link" className="sr-only">
-                    Link
-                  </Label>
                   <Input
-                    id="link"
-                    defaultValue="https://ui.shadcn.com/docs/installation"
-                    readOnly
+                    data-testid="discount-code-input"
+                    id="discount-code"
+                    aria-label="Discount code input"
+                    placeholder="Enter your discount code"
+                    value={discountCode}
+                    onChange={(e) => setDiscountCode(e.target.value)}
+                    aria-invalid={!!discountError}
+                    aria-describedby={discountError ? 'discount-error' : undefined}
                   />
+                  {discountError && (
+                    <p id="discount-error" className="text-destructive mt-2 text-xs">
+                      {discountError}
+                    </p>
+                  )}
                 </div>
               </div>
               <DialogFooter className="sm:justify-start">
-                <DialogClose asChild>
-                  <Button type="button">Close</Button>
-                </DialogClose>
+                <Button type="button" onClick={handleApplyDiscount}>
+                  Apply Discount Code
+                </Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
