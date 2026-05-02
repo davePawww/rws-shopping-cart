@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 
+import { SearchProduct } from '@/features/products';
 import { Products } from '@/features/products/components/products';
 import { productsQueryOptions } from '@/features/products/products.queries';
 
@@ -9,5 +10,10 @@ export const Route = createFileRoute('/')({
 });
 
 function RouteComponent() {
-  return <Products />;
+  return (
+    <>
+      <SearchProduct />
+      <Products />
+    </>
+  );
 }

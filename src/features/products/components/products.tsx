@@ -13,6 +13,11 @@ import type { Product } from '@/types/product.types';
 export function Products() {
   const { data, error } = useQuery(productsQueryOptions);
   const addToCart = useCartStore((state) => state.addToCart);
+  const searchItem = useCartStore((state) => state.searchItem);
+
+  const filteredData = data?.filter((product: Product) =>
+    product.title.toLowerCase().includes(searchItem.toLowerCase()),
+  );
 
   const containerVariants: Variants = {
     visible: {
@@ -66,7 +71,7 @@ export function Products() {
       animate="visible"
       className="mt-4 grid grid-cols-2 justify-items-center gap-4 md:grid-cols-3"
     >
-      {data?.map((product: Product) => (
+      {filteredData?.map((product: Product) => (
         <motion.div key={product.id} variants={itemVariants} className="h-full w-full">
           <Card className="relative mx-auto flex h-full w-full max-w-sm flex-col pt-0">
             <div className="absolute inset-0 z-30 aspect-video bg-black/15" />
