@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import type { CartStore } from '@/types/cart.types';
+import type { CartStore, Sort } from '@/types/cart.types';
 import type { Product } from '@/types/product.types';
 
 export const useCartStore = create<CartStore>()(
@@ -10,6 +10,8 @@ export const useCartStore = create<CartStore>()(
       cartItems: [],
       appliedDiscount: 0,
       searchItem: '',
+      sortBy: null,
+      setSortBy: (sort: Sort) => set({ sortBy: sort }),
       setSearchItem: (query: string) => set({ searchItem: query }),
       setAppliedDiscount: (discount: number) => set({ appliedDiscount: discount }),
       addToCart: (product: Product) =>
@@ -49,6 +51,6 @@ export const useCartStore = create<CartStore>()(
         })),
       clearCart: () => set({ cartItems: [] }),
     }),
-    { name: 'cart' },
+    { name: 'cart', partialize: (state) => ({ cartItems: state.cartItems }) },
   ),
 );

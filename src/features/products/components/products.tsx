@@ -14,10 +14,20 @@ export function Products() {
   const { data, error } = useQuery(productsQueryOptions);
   const addToCart = useCartStore((state) => state.addToCart);
   const searchItem = useCartStore((state) => state.searchItem);
+  const sortBy = useCartStore((state) => state.sortBy);
 
-  const filteredData = data?.filter((product: Product) =>
-    product.title.toLowerCase().includes(searchItem.toLowerCase()),
-  );
+  const filteredData = data
+    ?.filter((product: Product) => product.title.toLowerCase().includes(searchItem.toLowerCase()))
+    .sort((a: Product, b: Product) => {
+      if (!sortBy) return 0;
+      const { type, order } = sortBy;
+      if (type === 'price') {
+        return order === 'asc' ? a.price - b.price : b.price - a.price;
+      } else if (type === 'title') {
+        return order === 'asc' ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title);
+      }
+      return 0;
+    });
 
   const containerVariants: Variants = {
     visible: {
