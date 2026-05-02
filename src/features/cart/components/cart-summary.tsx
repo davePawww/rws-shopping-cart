@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FaTicketAlt } from 'react-icons/fa';
+import { toast } from 'sonner';
 
 import { Button, MotionButton } from '@/components/ui/button';
 import {
@@ -124,6 +125,7 @@ export function CartSummary() {
             transition={{ type: 'tween', duration: 0.1, ease: 'easeOut' }}
             size="sm"
             className="cursor-pointer"
+            onClick={() => toast.success('This is a demo, no actual checkout process!')}
           >
             Proceed to Checkout
           </MotionButton>
