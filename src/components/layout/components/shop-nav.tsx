@@ -8,7 +8,7 @@ export function ShopNav() {
   const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   return (
-    <div className="flex w-full items-center justify-between px-2">
+    <div className="flex w-full items-center justify-between pr-2">
       <Link to="/" aria-label="link to home">
         <p className="text-md font-medium">Products</p>
       </Link>
