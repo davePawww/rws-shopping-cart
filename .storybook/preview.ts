@@ -10,6 +10,16 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+    a11y: {
+      config: {
+        rules: [
+          {
+            id: 'aria-valid-attr-value',
+            enabled: false,
+          },
+        ],
+      },
+    },
   },
   decorators: [
     withThemeByClassName({

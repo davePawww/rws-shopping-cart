@@ -24,6 +24,8 @@ export function CartSummary() {
   const discount = (Number(subTotal) > 100 ? Number(subTotal) * 0.1 : 0).toFixed(2);
   const total = (Number(subTotal) + Number(vat) - Number(discount)).toFixed(2);
 
+  if (cartItems.length === 0) return null;
+
   return (
     <div className="mt-auto w-full space-y-2">
       <h4 className="font-medium">Cart Summary</h4>
